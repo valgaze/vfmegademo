@@ -1,6 +1,6 @@
 import { Launch, bad } from 'speedybot'
 import handlers from './../settings/handlers'
-import config from './../settings/config.json'
+import { token } from './../../settings/config.json'
 // helper types
 import { BotHandler, SpeedybotConfig } from 'speedybot'
 
@@ -15,4 +15,4 @@ async function boot(config: SpeedybotConfig, handlers: BotHandler[]) {
     }    
 }
 
-boot(config, handlers)
+boot({token}, handlers)
