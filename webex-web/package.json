@@ -1,0 +1,19 @@
+{
+  "name": "webex-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node boot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cli-ux": "^6.0.9",
+    "node-static": "^0.7.11",
+    "speedybot": "^1.0.18",
+    "webex-node-bot-framework": "^2.3.9"
+  }
+}

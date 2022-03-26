@@ -1,0 +1,87 @@
+{
+  "name": "voiceflow-demo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "setup": "npm i && cd backend && npm i && cd .. && cd webex-web && npm i && cd .. && cd webex-bot && npm i && cd .. && cd custom-webui && npm i && cd ..",
+    "build:all":"npm run build:ui && npm run build:sass && npm run build:webex-web",
+    "boot:backend": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "build:backend": "echo no op",
+    "boot:webex-web": "cd webex-web && npm start",
+    "dev:webex-web": "cd webex-web && npm start",
+    "build:webex-web": "cp webex-web/ui/index.html backend/ui/webex-web.html",
+    "boot:webex-bot": "cd webex-bot && npm start",
+    "dev:webex-bot": "cd webex-bot && npm run dev",
+    "build:webex-bot": "cd webex-bot && npm run build",
+    "boot:sass": "cd sassy-app && npm start",
+    "dev:sass": "cd sassy-app && npm start",
+    "build:sass": "cd sassy-app && npm run build && cp -r dist/ ../backend/ui",
+    "boot:ui": "cd custom-webui && npm run serve",
+    "dev:ui": "cd custom-webui && npm run serve",
+    "build:ui": "cd custom-webui && npm run build && cp -r dist/ ../backend/ui/custom",
+    "cypress": "cypress open",
+    "test": "cypress run",
+    "test:visual": "npm run cypress",
+    "cypress:init": "node_modules/.bin/cypress open",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build:prod": "vue-cli-service build --mode production",
+    "lint": "vue-cli-service lint",
+    "build_test": "tsc",
+    "killdist": "rm -rf dist",
+    "m": "npx ts-node $1",
+    "cycle": "npm run build && cp -r dist/* $npm_package_config_kitpath/src/frontend/dist/ && cd $npm_package_config_kitpath && npm run deploy:frontend:full && echo $PWD && cd deploy/frontend && echo 'done'"
+  },
+  "config": {
+    "kitpath": "../__dfcheatkit/"
+  },
+  "dependencies": {
+    "chart.xkcd": "^1.1.13",
+    "chart.xkcd-vue": "^1.1.0",
+    "core-js": "^3.6.4",
+    "cors": "^2.8.5",
+    "df-cheatcodes-base": "^0.1.7",
+    "install": "^0.13.0",
+    "lodash": "^4.17.15",
+    "nes.css": "^2.3.0",
+    "showdown": "^1.9.1",
+    "typeface-press-start-2p": "0.0.72",
+    "vodal": "^2.4.0",
+    "vue": "^2.6.11",
+    "vue-carousel-3d": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/tape": "^4.13.0",
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-eslint": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "babel-eslint": "^10.1.0",
+    "cypress": "^4.9.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "tape": "^5.0.0",
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

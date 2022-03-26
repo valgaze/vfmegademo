@@ -1,0 +1,7 @@
+{
+    "token":"__REPLACE__ME__",
+    "space_id":"__REPLACE__ME__",
+    "apiKey":"__REPLACE__ME",
+    "port":8000,
+    "host":"localhost"
+}
