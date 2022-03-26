@@ -13,11 +13,12 @@ const ui_dir = resolve(__dirname, 'ui')
 let ui_path = resolve(ui_dir, 'index.html')
 
 async function main(filePath, port) {
-let address = `http://localhost:${port}/index.html`
+const safePort = Number(port) + 1
+let address = `http://localhost:${safePort}/index.html`
 loud(`Running on ${port}
 ${address}`)
 
-    await serveDir(ui_dir, port)
+    await serveDir(ui_dir, safePort)
 
     // attempt to open w/ token
     if (token !== placeholder) {

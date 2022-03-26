@@ -1,187 +1,114 @@
-<!-- https://github.com/webex/react-widgets/tree/master/packages/node_modules/@webex/widget-space -->
-
-<link rel="stylesheet" href="https://code.s4d.io/widget-recents/production/main.css">
+<script src="https://code.s4d.io/widget-space/production/bundle.js"></script>
 <link rel="stylesheet" href="https://code.s4d.io/widget-space/production/main.css">
 
-<script src="https://code.s4d.io/widget-space/production/bundle.js"></script>
+<link rel="stylesheet" href="https://code.s4d.io/widget-recents/production/main.css">
 <script src="https://code.s4d.io/widget-recents/production/bundle.js"></script>
 
 <style>
-  .chat-window {
-      display: flex;
-  }
-  .widget {
-    width: 300px;
-    height: 500px;
-  }
-
-  body {
-     background-color:#f6f6ef;
-  }
     input {
-        width: 50%;
         cursor: pointer;
-        /* font-size: 1rem; */
+        color: #34495e;
+        font-size: 1rem;
         line-height: 1.4rem;
+        width: 100%;
+        font-family: 'Courier New';
+        margin: 6px;
+        background: #ecf0f1;
     }
+
     * {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        color: #828282;
-        font-size: 1rem;
+        font-size: 14px;
+        color: #34495e;
     }
-    
-    .chat-inactive {
-      
+    body {
+        background-color:  #ecf0f1;
+    }
+    .launch-button {
+        background: #2ecc71;
+        padding: 1%;
+        color: #fff;
+        font-weight: 900;
+        font-family: sans-serif;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+    }
+
+    .launch-button:hover {
+        background: #41d47f;
+    }
+
+    .launch-wrap {
+        padding: 1%;
     }
 </style>
 <body>
     <div class="chat-wrap">
         <fieldset>
             <legend>WebEx in a Web Embed</legend>
-            <div><label>STEP 1: Set  accessId (copy personal access token from <a href="https://developer.webex.com/docs/api/v1/rooms/list-rooms" _target="_blank">here</a>): </label><input type="text" id="access_id" value="" placeholder="access id here" /></div>
-            <div><label>STEP 2: Set RoomId (not room name): </label><input type="text" id="space_id" value="" placeholder="space id here" /></div>
-            <ul class="resources">
-                <li><a href="https://developer.webex.com/docs/api/v1/rooms/list-rooms">Get access token</a></li>
-                <li><a href="https://developer.webex.com/docs/api/v1/rooms/list-rooms">Get all subscribed rooms</a></li>
-                <li><a href="https://www.github.com/webex/react-widgets">Source</a></li>
-            </ul>
+            <div>
+                <label>Set access id (copy access token from <a href="https://developer.webex.com/my-apps" target="_blank">here</a>): </label>
+                <input type="text" id="access_id_input" value="" placeholder="access id here" />
+            </div>
+            <button id="launch" class="launch-button">LAUNCH</button>
         </fieldset>
         <div class="launch-wrap">
-            <button id="launch" class="chat-inactive">LAUNCH</button>
-            <!-- <div id="my-webexteams-widget" style="width: 500px; height: 500px;" /> -->
-
-            <div class="chat-window">
-              <div id="recents" class="widget"></div>
-              <div id="my-webexteams-widget" class="widget"></div>
-           </div>
-        
+            <div style="display: flex; justify-content: center;">
+                <div id="webex-recent" style="width: 500px; height: 500px;"></div>
+                <div id="webex-space" style="width: 500px; height: 500px; background: radial-gradient(#e74c3c, transparent); display:flex; justify-content: center;">
+                    <div>
+                        <h3>Select a 1-1 conversation from the left </h3>
+                        <div>Note: Bots can only request mentions, not whole conversations</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script>
-        window.__active = false;
+        const urlParams = new URLSearchParams(window.location.search);
+        const access_id = urlParams.get('access_id')
+        const $recent = document.querySelector('#webex-recent')
+        const $space = document.querySelector('#webex-space')
+        const $input = document.querySelector('#access_id_input')
+
         const setInputs = (selectors, vals) => {
             selectors.forEach((selector, idx) => {
                 document.querySelector(selector, idx).value = vals[idx]
             })
         }
-        const urlParams = new URLSearchParams(window.location.search);
-        const accessid = urlParams.get('access_id')
-        const roomid = urlParams.get('room_id')
-
-        // Helpers
-        const $elector = document.querySelector('my-webexteams-widget')
-        const $button = document.querySelector('#launch')
-        const $recents = document.getElementById('recents');
-
-        const addClass = (selector, className) => selector.classList.add(className)
-        const removeClass = (selector, className) => selector.classList.remove(className)
-        const changeLabel = (label) => {
-            $button.innerHTML = label
-        }
-        const setButton = (status) => {
-
-            // alert(document.querySelector('#launch').classList.removeClass('x'))
-            if (status === 'active') {
-                addClass($button, 'chat-inactive')
-                removeClass($button, 'chat-active')
-                changeLabel('Launch')
-            } else {
-                removeClass($button, 'chat-inactive')
-                addClass($button, 'chat-active')
-                changeLabel('Hide')
-            }
-        }
-
-        // Launch button
-        const launch = (accessId, spaceId, $elector) => {
-            const errorBank = []
-            if (!accessId) {
-                errorBank.push(`Missing access token (copy 'Bearer' token from here: Copy token from here: https://developer.webex.com/docs/api/v1/rooms/list-rooms)`)
-            }
-            if (!spaceId) {
-                errorBank.push(`Missing space id. Click "run" for a list of all your spaces: https://developer.webex.com/docs/api/v1/people/list-people`)
-            }
-            // if ($elector) {
-            //   errorBank.push(`Missing element mount, use document.querySelector('.element-selector-here')`);
-            // }
-            if (errorBank.length) {
-                const error = errorBank.join('\n')
-                console.log(error)
-                return alert(errorBank.join('\n'))
-            }
-
-            window.__active = !window.__active;
-            if (window.__active) {
-                setButton('inactive')
-
-
-                webex.widget($recents).recentsWidget({
-                  accessToken: accessId,
-                  onEvent: (evtName, {data}) => { 
-                    const { id } = data
-                    const switchRoom = (roomId) =>{
-                      console.log('I bet ya select the element and trigger something', roomId)
-
-                      webex.widget($elector).remove()
-
-                      webex.widget($elector).spaceWidget({
-                          accessToken: accessId,
-                          destinationType: 'spaceId',
-                          destiationId: roomId
-                      });
-
-                      
-                    }
-                    switchRoom(id)
-
-                  }
-                });
-
-                console.log("#", accessId, '||', spaceId)
-                webex.widget($elector).spaceWidget({
-                    accessToken: accessId,
-                    destinationId: spaceId,
-                    destinationType: 'spaceId',
-                })
-            } else {
-                setButton('active')
-                webex.widget($elector).remove()
-            }
-
-        }
-
-
-        const getInputs = (...selectors) => {
-            const vals = []
-            selectors.forEach((selector, idx) => {
-                const val = document.querySelector(selector).value
-                vals.push(val)
+        const mountRecent = ($, access_id, $space) => {
+            try {
+                webex.widget($).remove()
+            }catch(e) {}
+            webex.widget($).recentsWidget({
+                accessToken: access_id,
+            });
+            $.addEventListener('rooms:selected', (e) => {
+                const {id} = e.detail.data
+                mountSpace($space, access_id, id)
             })
-            return vals
+        }
+
+        const mountSpace = ($, access_id, roomId) => {
+            try {
+                webex.widget($).remove()
+            }catch(e) {}
+            webex.widget($).spaceWidget({
+                accessToken: access_id,
+                destinationId: roomId,
+                destinationType: 'spaceId',
+            });
         }
 
         document.querySelector('#launch').addEventListener('click', (e) => {
-            const [access_id, space_id] = getInputs('#access_id', '#space_id');
-            const widgetEl = document.getElementById('my-webexteams-widget');
-            launch(access_id, space_id, widgetEl);
+            const access_id = $input.value
+            mountRecent($recent, access_id, $space)
         })
-        const widgetEl = document.getElementById('my-webexteams-widget');
 
-        if (accessid && roomid) {
-            const $accessid = document.querySelector('#access_id')
-            const $spaceid = document.querySelector('#space_id')
-
-            // setInputs([$accessid, $spaceid], [accessid, roomid])
-            setInputs(['#space_id', '#access_id'], [roomid, accessid])
-            const $button = document.querySelector('#launch')
-            $button.click()
-        }
-
-        if (accessid) {
-          const $accessid = document.querySelector('#access_id')
-          setInputs(['#access_id'], [accessid])
-            const $button = document.querySelector('#launch')
-            $button.click()
+        if (access_id) {
+            mountRecent($recent, access_id, $space)
+            setInputs(['#access_id_input'], [access_id])
         }
     </script>
 </body>
