@@ -1,6 +1,0 @@
-{
-    "watch": ["index.js", "util.js"],
-    "ext": "ts, json",
-    "ignore": [""],
-    "exec": "npm run start"
-}

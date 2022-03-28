@@ -1,6 +1,6 @@
 // Root config
 import { apiKey, host, port } from './../../settings/config.json'
-
+// import serviceAccount from '../../../service/service-account.json'
 import { BotHandler, $, SpeedyCard} from 'speedybot'
 import pretty from 'pretty'
 import axios from 'axios'
@@ -9,7 +9,7 @@ import Namegamehandler from './namegame'
 import { Voiceflow, TransformedResponse } from './vf'
 import { XlsHelper } from './xlsx'
 
-
+import { easyMode, helpers } from './../../backend/image_service'
 // if we need to call backend for some reason from this agent
 // image?
 export const $postBackend = async (route='api_block', data={}, config={}) => {
@@ -46,9 +46,7 @@ const handlers: BotHandler[] = [
 		keyword: '<@catchall>',
 		async handler(bot, trigger) {
 			const $bot = $(bot)
-			const resy = await $postBackend('image_recognition', {})
-			console.log("##", resy)
-			$bot.sendSnippet(resy.data, 'Beer')
+			$bot.log(`-----------`)
 
 			const vf = new Voiceflow(apiKey)
 
@@ -164,13 +162,56 @@ const handlers: BotHandler[] = [
 						$bot.sendDataAsFile(html, '*.html')
 						
 					} else if (extension === 'jpeg' || extension === 'jpg' || extension === 'png') {
+
+						console.log(`
+						
+						>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+						fileName: ${fileName}
+						extension: ${extension}
+						type: ${type}
+						
+						>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+						
+						`)
+					
+
+
+						
+						const dataFix = ( buffer ) => {
+							var binary = '';
+							var bytes = new Uint8Array( buffer );
+							var len = bytes.byteLength;
+							for (var i = 0; i < len; i++) {
+								binary += String.fromCharCode( bytes[ i ] );
+							}
+
+							return Buffer.from(binary,'binary').toString('base64')
+						}
+						
+						
+						console.log('---\n\n')
+
 						const payload = {
-							bytes: data,
+							bytes: dataFix(data),
 							config: {}
 						}
 
-						const res = await $postBackend('/image_recognition', payload)
-						console.log('## we hit route', res.data)
+
+						const resy = await easyMode(dataFix(payload), 	helpers.buildPath(__dirname, '..', ',,', 'settings', 'service-account.json')).catch(e => console.log('error GRR', e))
+
+
+
+
+						await helpers.writeBuffer(dataFix(data), 'bongo.jpeg')
+						
+						
+						// onsole.log(resy)
+						console.log('\n\n---')
+						bot.say(resy)
+						
+
+						const res = await $postBackend('image_recognition', payload)
+
 						$bot.sendSnippet(res.data, 'Here is photo info')
 						bot.say(`From here, we should take the result call voice or do something with it`)
 

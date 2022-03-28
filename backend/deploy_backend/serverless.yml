@@ -1,0 +1,23 @@
+service: serverless-blackbox-backend
+frameworkVersion: '3'
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: '20201221'
+
+functions:
+  hello:
+    handler: handler.speedybot_serverless
+    events:
+      - httpApi:
+          path: /
+          method: post
+  images:
+    handler: handler.image_recognition
+    events:
+      - httpApi:
+          path: /image
+          method: post

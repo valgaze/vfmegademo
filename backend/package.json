@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "deploy": "cd deploy_backend && npm run deploy",
     "dev": "npx nodemon",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
