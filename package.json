@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "setup": "npm i && cd backend && npm i && cd .. && cd webex-web && npm i && cd .. && cd webex-bot && npm i && cd .. && cd custom-webui && npm i && cd ..",
-    "build:all":"npm run build:ui && npm run build:sass && npm run build:webex-web",
+    "build:all": "npm run build:ui && npm run build:sass && npm run build:webex-web",
     "boot:backend": "cd backend && npm start",
     "dev:backend": "cd backend && npm run dev",
+    "deploy:backend":"cd backend && npm run deploy",
     "build:backend": "echo no op",
     "boot:webex-web": "cd webex-web && npm start",
     "dev:webex-web": "cd webex-web && npm start",
@@ -37,6 +38,7 @@
     "kitpath": "../__dfcheatkit/"
   },
   "dependencies": {
+    "@google-cloud/vision": "^2.4.2",
     "chart.xkcd": "^1.1.13",
     "chart.xkcd-vue": "^1.1.0",
     "core-js": "^3.6.4",

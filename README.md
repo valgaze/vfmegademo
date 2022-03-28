@@ -1,7 +1,7 @@
 ## Demo
 
 
-## 1) Credentails
+## 1) Credentials
 
 
 Set credentails in **[settings/config.json](./settings/config.json)**
@@ -76,8 +76,11 @@ Mysterious blackbox service returns Google Assistant v2 JSON spec
 
 **[DialogFlow Payloads](https://gist.github.com/valgaze/dcd07f6d93f654de6d14d76a341d9450)**
 
+
+Deploy to serverless w/
+
 ```
-npm run boot:server
+npm run deploy:backend
 ```
 
 ## WebEx Bot
@@ -106,6 +109,4 @@ why
 
 ## Broken
 
-- webex-web: doesn't like bot tokens at the moment
-- proxy "other" sass item (not in this repo), ```proxy.conf.json``` failing for port 8000
 - (low priority) serve all built/static from backend/ui (fallback is just serve live-reloaded)

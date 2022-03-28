@@ -443,7 +443,7 @@ export default {
       backend: backend,
       debugMode: false,
       scrollToBottom: true,
-      triggerMessage: "",
+      triggerMessagfe: "",
       triggerShortcut: "",
       suggestions: ['hi', 'good bye'],
       permanentSuggestions: [],
