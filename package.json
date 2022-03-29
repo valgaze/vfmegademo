@@ -21,21 +21,15 @@
     "boot:ui": "cd custom-webui && npm run serve",
     "dev:ui": "cd custom-webui && npm run serve",
     "build:ui": "cd custom-webui && npm run build && cp -r dist/ ../backend/ui/custom",
-    "cypress": "cypress open",
-    "test": "cypress run",
-    "test:visual": "npm run cypress",
-    "cypress:init": "node_modules/.bin/cypress open",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build:prod": "vue-cli-service build --mode production",
-    "lint": "vue-cli-service lint",
-    "build_test": "tsc",
-    "killdist": "rm -rf dist",
-    "m": "npx ts-node $1",
-    "cycle": "npm run build && cp -r dist/* $npm_package_config_kitpath/src/frontend/dist/ && cd $npm_package_config_kitpath && npm run deploy:frontend:full && echo $PWD && cd deploy/frontend && echo 'done'"
+    "beer":"ls ~/$npm_package_config_credentials",
+    "arm":"cp -r ~/$npm_package_config_credentials/* ./settings",
+    "disarm":"cp ~/$npm_package_config_inert/service-account.json ~/$npm_package_config_inert/config.json settings/"
   },
   "config": {
-    "kitpath": "../__dfcheatkit/"
+    "root": "Desktop/mega-demo",
+    "settings": "Desktop/mega-demo/settings",
+    "credentials": "Desktop/credentials/armed",
+    "inert": "Desktop/credentials/inert"
   },
   "dependencies": {
     "@google-cloud/vision": "^2.4.2",
