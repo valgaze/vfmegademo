@@ -1,23 +1,8 @@
 const rando = () => Math.random().toString(32).slice(2)
 const { imageAPI, helpers } = require('./image_service')
-
+const { fakeAPI } = require('./deploy_backend/responses')
 
 const serviceAccountFilePath = helpers.buildPath(__dirname, '..', 'settings', 'service-account.json')
-
-const fakeAPI = () => {
-    const phonyResponseData = {
-        deviceName: `bongo___${rando()}_${rando()}`,
-        deviceId: rando(),
-        deviceType: 'WFH_Collab',
-    }
-
-    return {
-        ...phonyResponseData
-    }
-}
-
-
-
 
 module.exports.computerVisionService = async (bytes) => {
     // Root config

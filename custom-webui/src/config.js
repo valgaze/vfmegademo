@@ -1,8 +1,6 @@
 // Change here or in settings (or later flag in URL or in .env file
 // .env or .env.production
-const backend = '/api_block'
-// const backend = 'http://localhost:8000/api_block?setCounter=1'
-
+const backend = String(process.env.VUE_APP_BACKEND).trim()
 
 const languageCodes = [
   "zh-HK",

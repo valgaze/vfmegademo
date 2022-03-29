@@ -18,6 +18,7 @@ Set credentails in **[settings/config.json](./settings/config.json)**
 
 
 ## 2) Install dependencies
+
 ```
 npm run setup # dependencies
 ```
@@ -28,21 +29,30 @@ npm run setup # dependencies
 Defaults port 8000
 
 ```
+POST /api_block
+POST /api_block?step=0 ## set querystring int
+
+POST /image_recognition
+```
+
+```
 npm run boot:backend
 ```
 
 ## [background] 4) Boot bot
 
 Defaults to websockets
+```token``` in **[settings/config.json](settings/config.json)**
 
 ```
 npm run boot:webex-bot
 ```
 
-
 ## 5) Boot custom ui
 
 Defaults localhost:8080
+
+**NOTE**: Backend set as ```VUE_APP_BACKEND``` in **[custom-webui/.env](./custom-webui/.env)**
 
 ```
 npm run boot:ui # custom videogame'y ui
@@ -50,16 +60,32 @@ npm run boot:ui # custom videogame'y ui
 
 ## 6) Boot sassy-ui
 
+Defaults localhost:4200
+
 ```
 npm run boot:sass
 ```
 
 ## 7) Boot WebEx (web)
 
+Defaults localhost:8001
+
+Will attempt to launch with ```token``` from **[settings/config.json](settings/config.json)**
+
 ```
 npm run boot:webex-web
 ```
 
+## "Backend"
+
+Mysterious blackbox service returns Google Assistant v2 JSON spec
+
+**[DialogFlow Payloads](https://gist.github.com/valgaze/dcd07f6d93f654de6d14d76a341d9450)**
+
+
+
+
+-------------
 
 ```
 npm run boot:backend # mysterious "black-box" backend
@@ -69,12 +95,6 @@ npm run boot:webex-web # static html w/ webex widget embed
 ```
 
 
-
-## "Backend"
-
-Mysterious blackbox service returns Google Assistant v2 JSON spec
-
-**[DialogFlow Payloads](https://gist.github.com/valgaze/dcd07f6d93f654de6d14d76a341d9450)**
 
 
 Deploy to serverless w/

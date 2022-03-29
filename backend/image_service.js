@@ -15,15 +15,13 @@ class ImageAnalysis {
 
     _setAuth(fullPath) {
         // Hack for obnoxious google cloud client library requirement
-        const filePath = resolve(__dirname, 'service-account.json');
-        process.env[this.envName] = filePath
-        if (process.env[this.envName] !== filePath) {
+        process.env[this.envName] = fullPath
+        if (process.env[this.envName] !== fullPath) {
             throw new Error(`${this.envName} environment variable not set.`)
         }
     }
 
     async analyze(imageDataOrPath) {
-        console.log('analyzing image...', imageDataOrPath)
         const [result] = await this.client.labelDetection(imageDataOrPath).catch(e => {
             const { message } = e;
             if (e.message.includes('the default credentials.')) {
@@ -32,11 +30,15 @@ class ImageAnalysis {
                 throw e
             }
         });
-        const labels = result.labelAnnotations;
-        console.log('Labels:');
-        labels.forEach(label => console.log(label.description));
+        const labels = result.labelAnnotations; // labels.forEach(label => console.log(label.description));
+
         return labels
     }
+
+    async writeBytesToFile(bytes, filePath) {
+        return writeFileSync(filePath, bytes)
+    }
+
 }
 
 //Static helpers
@@ -59,10 +61,8 @@ ImageAnalysis.prototype.validateCredentials = async function (serviceAccountFile
 
 ImageAnalysis.prototype.writeBuffer = (fileName, buffer) => {
     try {
-        return writeFileSync(fileName, buffer)
-        
+        return writeFileSync(fileName, buffer)        
     }catch(e){
-        console.log(e)
         throw e
     }
 }
@@ -75,13 +75,13 @@ module.exports.helpers = {
         return ImageAnalysis.prototype.validateCredentials(serviceAccountFilePath)
     },
     buildPath: (...pieces) => ImageAnalysis.prototype.buildPath(...pieces),
-    writeBuffer: (fileName, buffer) => ImageAnalysis.prototype.writeBuffer(fileName, buffer)
+    writeBuffer: (fileName, buffer) => ImageAnalysis.prototype.writeBuffer(fileName, buffer),
 }
 
 
 module.exports.ImageAnalysis = ImageAnalysis;
 
-module.exports.easyMode = async (bytes, serviceAccountFilePath) => {
+module.exports.fastAnalyze = async (bytes, serviceAccountFilePath) => {
     const inst = new ImageAnalysis(serviceAccountFilePath)
     try {
         const res = await inst.analyze(bytes)

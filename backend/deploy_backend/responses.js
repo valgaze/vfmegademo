@@ -5,3 +5,17 @@ const responses = [
 ]
 
 module.exports.responses = responses
+
+
+module.exports.fakeAPI = () => {
+    const phonyResponseData = {
+        deviceName: `bongo___${rando()}_${rando()}`,
+        deviceId: rando(),
+        deviceType: 'WFH_Collab',
+    }
+  
+    return {
+        ...phonyResponseData
+    }
+  }
+  
